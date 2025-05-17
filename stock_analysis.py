@@ -52,9 +52,9 @@ def classify_trend(df):
         return "Sideways / Neutral"
 
 # === Claude Prompt Builder ===
-def build_claude_prompt(ticker, latest, pe, eps, sector):
+def build_claude_prompt(ticker, latest, pe, eps, sector, LSTM_Result):
     return f"""
-You are a professional stock market analyst. Based on the following indicators and fundamentals for stock **{ticker}** (Use the Public Known Name of the company), write a short report.
+You are a professional stock market analyst. Based on the following indicators and fundamentals for stock **{ticker}** (Use the Public Known Name of the company) and I am giving you the LSTM Model result {LSTM_Result}, write a short report.
 
 Technical Indicators:
 - Close Price: Rs.{latest['Close'].item():.2f}
@@ -71,7 +71,7 @@ Fundamentals:
 
 Please provide:
 1. A 1-line summary of the indicators (Giving full name of the indicators) and also the recent real challenges faced by the company.
-2. The current price of the stock and the trend (bullish/bearish/sideways) and why.
+2. The current price of the stock and the trend (bullish/bearish/sideways) and why (use the {LSTM_Result} from the LSTM model for the explanation.).
 3. Also provide what Various Research Agencies are having its outloop towards the stock price target weather to buy sell or hold.
 4. Market or sector-level trend that could affect this stock, and the recent real challenges faced by the company.
 5. Investor recommendation (buy/hold/avoid) with explanation and sentiments.
@@ -170,7 +170,7 @@ if __name__ == "__main__":
 
         # Claude Summary
         print("Asking Claude for natural language analysis...")
-        prompt = build_claude_prompt(ticker, latest, pe, eps, sector)
+        prompt = build_claude_prompt(ticker, latest, pe, eps, sector, LSTM_Result)
         summary = get_claude_analysis(prompt)
 
         print("\nStock Trend Summary:\n")

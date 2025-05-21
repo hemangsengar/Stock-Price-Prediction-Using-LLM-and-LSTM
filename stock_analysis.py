@@ -113,7 +113,7 @@ Fundamentals:
 
 Please provide:
 1. A 1-line summary of the indicators (Giving full name of the indicators) and also the recent real challenges faced by the company.
-2. The current price of the stock and the trend (bullish/bearish/sideways) and why (use the {LSTM_Result} from the LSTM model for the explanation.).
+2. The current price of the stock and the trend (bullish/bearish/sideways) and why (use the {LSTM_Result} from the LSTM model for the explanation if available.).
 3. Also provide what Various Research Agencies are having its outloop towards the stock price target weather to buy sell or hold.
 4. Market or sector-level trend that could affect this stock, and the recent real challenges faced by the company.
 5. Investor recommendation (buy/hold/avoid) with explanation and sentiments.
@@ -174,4 +174,3 @@ if __name__ == "__main__":
 
     except Exception as e:
         print(f"Error: {e}")
-infosys

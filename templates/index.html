@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockPulse | AI Analysis Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Stock<span>Pulse</span></h1>
+            <p>Advanced AI-Powered Stock Trend Analysis</p>
+        </header>
+
+        <section class="search-section">
+            <div class="search-box">
+                <input type="text" id="companyInput" placeholder="Enter Company Name (e.g. Infosys, TCS)">
+                <button id="analyzeBtn">Analyze Stock</button>
+            </div>
+        </section>
+
+        <main id="resultArea" class="hidden">
+            <div class="dashboard-grid">
+                <!-- Basic Info Card -->
+                <div class="card basic-info">
+                    <h2 id="stockName">--</h2>
+                    <div class="price-badge">
+                        <span class="currency">Rs.</span>
+                        <span id="stockPrice">0.00</span>
+                    </div>
+                </div>
+
+                <!-- Alpha Score Card (Novelty) -->
+                <div class="card alpha-score">
+                    <h3>Unified Alpha Score</h3>
+                    <div class="alpha-value" id="alphaValue">--</div>
+                    <p class="description">Quant Fusion: LSTM + Sentiment</p>
+                </div>
+
+                <!-- LSTM Prediction Card -->
+                <div class="card prediction">
+                    <h3>LSTM Trend Prediction</h3>
+                    <div id="lstmBadge" class="badge">--</div>
+                </div>
+
+                <!-- Indicators Card -->
+                <div class="card indicators">
+                    <h3>Technical Indicators</h3>
+                    <ul id="indicatorList">
+                        <li><span>RSI (14)</span> <b id="rsiVal">--</b></li>
+                        <li><span>SMA (50)</span> <b id="smaVal">--</b></li>
+                        <li><span>EMA (20)</span> <b id="emaVal">--</b></li>
+                        <li><span>MACD</span> <b id="macdVal">--</b></li>
+                    </ul>
+                </div>
+
+                <!-- News & Sentiment Card -->
+                <div class="card news-sentiment full-width">
+                    <h3>Market News & Sentiment Impact</h3>
+                    <div id="newsArea" class="news-list">
+                        <!-- News items will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Claude Analysis Card -->
+                <div class="card report full-width">
+                    <h3>AI Quant Report</h3>
+                    <div id="claudeReport" class="report-content">
+                        <!-- Content will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div id="loader" class="hidden">
+            <div class="spinner"></div>
+            <p>Analyzing market data with Claude & LSTM...</p>
+        </div>
+
+        <div id="errorArea" class="error-msg hidden"></div>
+    </div>
+
+    <script>
+        document.getElementById('analyzeBtn').addEventListener('click', async () => {
+            const company = document.getElementById('companyInput').value.trim();
+            if (!company) return;
+
+            // Reset UI
+            document.getElementById('resultArea').classList.add('hidden');
+            document.getElementById('errorArea').classList.add('hidden');
+            document.getElementById('loader').classList.remove('hidden');
+
+            try {
+                const response = await fetch('/analyze', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ company_name: company })
+                });
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // Inject Data
+                document.getElementById('stockName').textContent = `${data.company_name} (${data.ticker})`;
+                document.getElementById('stockPrice').textContent = data.latest_price.toFixed(2);
+
+                // Alpha Score
+                const alphaVal = document.getElementById('alphaValue');
+                alphaVal.textContent = Math.round(data.unified_alpha_score);
+                alphaVal.style.color = data.unified_alpha_score > 50 ? '#00ffa3' : '#ff4d4d';
+
+                const lstmBadge = document.getElementById('lstmBadge');
+                lstmBadge.textContent = data.lstm_trend;
+                lstmBadge.className = 'badge ' + data.lstm_trend.toLowerCase();
+
+                document.getElementById('rsiVal').textContent = data.indicators.rsi.toFixed(2);
+                document.getElementById('smaVal').textContent = 'Rs. ' + data.indicators.sma50.toFixed(2);
+                document.getElementById('emaVal').textContent = 'Rs. ' + data.indicators.ema20.toFixed(2);
+                document.getElementById('macdVal').textContent = data.indicators.macd.toFixed(2);
+
+                // News & Sentiment
+                const newsArea = document.getElementById('newsArea');
+                newsArea.innerHTML = data.key_headlines.map(news => `
+                    <div class="news-item">
+                        <a href="${news.link}" target="_blank">${news.title}</a>
+                        <p class="impact">AI Impact: ${news.sentiment_impact || 'Analyzing...'}</p>
+                    </div>
+                `).join('');
+
+                // Format Claude Analysis
+                const formattedReport = data.claude_summary.replace(/\n/g, '<br>');
+                document.getElementById('claudeReport').innerHTML = formattedReport;
+
+                document.getElementById('resultArea').classList.remove('hidden');
+            } catch (err) {
+                document.getElementById('errorArea').textContent = '⚠️ ' + err.message;
+                document.getElementById('errorArea').classList.remove('hidden');
+            } finally {
+                document.getElementById('loader').classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>

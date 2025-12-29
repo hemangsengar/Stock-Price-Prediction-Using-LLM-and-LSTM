@@ -1,1 +1,5 @@
 .env
+analysis_cache.db
+__pycache__/
+.venv/
+*.pyc

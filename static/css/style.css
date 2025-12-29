@@ -309,6 +309,81 @@ header p {
     font-style: italic;
 }
 
+/* Company Profile */
+.company-profile .description {
+    line-height: 1.6;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    margin-top: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Peer Comparison */
+.peer-comparison .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.sector-badge {
+    background: rgba(0, 255, 163, 0.1);
+    color: var(--primary);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid rgba(0, 255, 163, 0.2);
+}
+
+.peer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.peer-item {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.peer-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--primary);
+    transform: translateY(-3px);
+}
+
+.peer-ticker {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.peer-metrics {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.peer-pe {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+
+.up {
+    color: #00ffa3;
+}
+
+.down {
+    color: #ff4d4d;
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 10px;

@@ -36,18 +36,31 @@ async def analyze(data: AnalysisRequest):
 
     # Caching Layer check
     cached_result = cache.get(ticker)
-    if cached_result:
+    if cached_result and "peers" in cached_result:
         print(f"✅ Cache Hit for {ticker}")
         return cached_result
+    elif cached_result:
+        print(f"🔄 Stale cache found (missing Peer data) for {ticker}. Re-running analysis...")
 
     # Async Analysis
     result = await perform_full_analysis(data.company_name)
     
+    # Conditional Caching: Only cache if analysis was truly successful
     if "error" not in result:
-        cache.set(ticker, result)
+        trend = result.get("lstm_trend", "")
+        alpha = result.get("unified_alpha_score", 0)
+        print(f"📊 Analysis Result for {ticker}: Trend={trend}, Alpha={alpha}")
+        
+        # Don't cache if we still have Unknown for some reason
+        if "Unknown" not in trend:
+            cache.set(ticker, result)
+            print(f"💾 Results cached for {ticker}")
+        else:
+            print(f"⚠️ Result contains 'Unknown' trend. Skipping cache.")
         
     return result
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="127.0.0.1", port=5000)
+    print("🚀 Starting StockPulse API on http://127.0.0.1:8080")
+    uvicorn.run(app, host="127.0.0.1", port=8080)

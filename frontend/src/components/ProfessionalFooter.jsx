@@ -32,7 +32,7 @@ const ProfessionalFooter = () => (
                     </p>
                     <div style={{ display: 'flex', gap: '1rem' }}>
                         <a
-                            href="https://github.com/hemangsengar/Stock-Price-Prediction-Using-LLM-and-LSTM"
+                            href="https://github.com/hemangsengar/"
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{
@@ -58,7 +58,7 @@ const ProfessionalFooter = () => (
                             <Github size={20} />
                         </a>
                         <a
-                            href="https://linkedin.com/in/yourprofile"
+                            href="https://linkedin.com/in/hemangsinghsengar"
                             target="_blank"
                             rel="noopener noreferrer"
                             style={{
@@ -84,7 +84,7 @@ const ProfessionalFooter = () => (
                             <Linkedin size={20} />
                         </a>
                         <a
-                            href="mailto:your.email@example.com"
+                            href="mailto:hemang.sengar@gmail.com"
                             style={{
                                 width: '44px',
                                 height: '44px',

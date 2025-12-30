@@ -15,7 +15,7 @@ const Navbar = () => {
     const links = [
         { label: 'About', href: '#about' },
         { label: 'Try Demo', href: '#terminal' },
-        { label: 'GitHub', href: 'https://github.com/hemangsengar/Stock-Price-Prediction-Using-LLM-and-LSTM', external: true, icon: Github },
+        { label: 'GitHub', href: 'https://github.com/hemangsengar/', external: true, icon: Github },
     ];
 
     return (

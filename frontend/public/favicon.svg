@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22d3ee"/>
+      <stop offset="50%" style="stop-color:#a855f7"/>
+      <stop offset="100%" style="stop-color:#f472b6"/>
+    </linearGradient>
+    <linearGradient id="pulseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="50" cy="50" r="48" fill="url(#bgGrad)" stroke="url(#lineGrad)" stroke-width="2"/>
+  
+  <!-- Upward trending stock line -->
+  <polyline 
+    points="15,70 30,55 45,62 55,45 70,50 85,25" 
+    fill="none" 
+    stroke="url(#lineGrad)" 
+    stroke-width="5" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"/>
+  
+  <!-- Pulse dot at the end -->
+  <circle cx="85" cy="25" r="6" fill="url(#pulseGrad)">
+    <animate attributeName="r" values="6;8;6" dur="1.5s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="1;0.7;1" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Small data points -->
+  <circle cx="30" cy="55" r="3" fill="#22d3ee"/>
+  <circle cx="45" cy="62" r="3" fill="#8b5cf6"/>
+  <circle cx="55" cy="45" r="3" fill="#a855f7"/>
+  <circle cx="70" cy="50" r="3" fill="#ec4899"/>
+</svg>

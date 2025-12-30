@@ -3,3 +3,4 @@ analysis_cache.db
 __pycache__/
 .venv/
 *.pyc
+report.docx
